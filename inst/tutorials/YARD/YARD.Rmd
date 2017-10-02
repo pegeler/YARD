@@ -1,0 +1,712 @@
+---
+title: "YARD: Yet Another R Demo"
+author:
+  - name: Paul W. Egeler, M.S., GStat
+    affiliation: West Michigan R Users Group
+date: "28 September 2017"
+output: learnr::tutorial
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+# library(ggplot2)
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+
+## Welcome!
+
+<center>![Big Data Ignite 2017](http://www.neuron0.net/YARD/BDIHorizontalLogo_Gradient.png){width="800"}</center>
+
+<!--```
+###############################################################################
+# 
+#               RRRRRRR
+#               RRR   RRR
+#               RRR   RRR
+#               RRRRRRR
+#               RRR   RRR
+#               RRR    RRR
+#               RRR    RRR
+#               RRR    RRR
+#               
+#       West Michigan R Users Group
+#
+###############################################################################
+```-->
+
+### Objective
+
+This tutorial is meant to introduce the R language to a person of technical
+background who heretofore has had limited exposure to the language
+but who is familiar with computing concepts. The neophyte will
+(hopefully) become comfortable with the R environment, try some basic
+data wrangling, and identify some of the pitfalls commonly encountered
+by newbies and seasoned programmers alike.
+
+
+I wrote this tutorial to answer one basic question:
+*what would be most helpful for __me__ to get started with a language I've never
+seen before?* 
+
+I hope everybody who reads this will find something that resonates
+with them!
+
+### About this tutorial
+
+Most of the code for this tutorial was originally created for the 
+West Michigan R Users group for a monthly meeting on 21 June 2016. It was 
+expanded into an interactive 
+[`learnr` tutorial](https://cran.r-project.org/web/packages/learnr/index.html)
+for the [Big Data Ignite 2017](http://www.bigdataignite.com/)
+conference in September 2017.
+
+
+I humbly thank everyone who reads this for the opportunity to tell you a little
+bit about my favorite programming language. My sincerest hope is that someone in
+the audience will become an R user as a result of this tutorial.
+
+<center><span style="color:white; background-color:red">**This tutorial is provided AS IS with NO WARRANTY OF ANY KIND.**</span></center>
+
+
+## Interpreter basics
+
+*Lets jump right in with an interactive tutorial! Code will be provided below. You can run the code as-is or edit it yourself!*
+
+### R can be used as a calculator
+
+Try out some basic arithmetic operations here.
+
+```{r fundamentals-calc, exercise=TRUE, exercise.lines = 8}
+# This is a comment!
+2 + 2
+
+5 * 2 + 3
+
+sqrt(1 - (3/4)^2)
+```
+
+### Ending commands
+
+Statements are ended with line breaks or semicolons. However, best practice is to *always* end a statement with a line break and *never* use a semicolon. (Insofar as there are *any* absolutes in programming.)
+
+```{r fundamentals-ending1, exercise=TRUE}
+# One statement, one line
+print("Hello world.")
+
+# Two statements, one line
+print("Hello");print("world.")
+```
+
+Statements can be extended over multiple lines. This is accomplished by ending a line with an open paren (`(`), a comma (`,`), an open curly brace (`{`) or just about any operator where it would make sense to continue the statement on the next line.  
+*NOTE: The console prompt changes from `>` to `+`*
+
+Let's use the pre-installed Motor Trend Cars dataset (`mtcars`) to illustrate how a `plot` function can be extended over multiple lines to aid in readability.
+
+```{r fundamentals-ending2, exercise=TRUE}
+# Here is a dataset that is part of the R installation 
+data(mtcars)
+
+# Let's look at the first six rows and then plot MPG versus weight
+head(mtcars)   # Peek at a  data frame
+
+plot(          # Create a plot of MPG by weight
+  mtcars$wt,
+  mtcars$mpg,
+  xlab = "Weight (lb/1000)",
+  ylab = "Miles/US Gal"
+)
+```
+
+## Assignment
+
+### Declaring variables
+
+As a rule, variables are not declared prior to assignment in R. Sometimes it may make computational sense to allocate space for a variable in memory in advance. In that case, 'empty' vectors of various types can be created and then manipulated. For example `character(5)` will produce a character vector of empty strings with a length of 5. Similarly, `integer(10)` will create an integer vector of length 10 where each element is zero.
+
+### Operators
+
+R has several operators/functions for assignment:
+
+- `<-`
+- `=`
+- `->`
+- `assign()`
+
+Try it for yourself.
+
+```{r fundamentals-assignment1, exercise=TRUE}
+a <- "foo"
+a
+
+b = "bar"
+b
+
+"baz" -> c 
+c
+
+assign("d", "Hello")
+d
+
+```
+
+
+```{r assignment-quiz}
+quiz(
+  question("The variable `x` is currently a boolean vector. Will this code assign an integer vector to `x`?
+           `x < - 1:10`",
+    answer("Yes"),
+    answer("No, it will assign floating point numbers"),
+    answer("No, it will coerce the vector into boolean"),
+    answer("No, it perform a comparison", correct = TRUE),
+    answer("No, it will cause an error")
+  )
+)
+```
+
+### `<-` or `=`?
+
+The use of `<-` versus `=` is to the subject of vigorous debate. They are not equivalent. Using `=` requires fewer keystrokes, but its behavior changes contextually since it is also used to assign values to arguments within function calls. The behavior of `<-` is always the same, and so some (including Hadley Wickham) would argue it should be the only operator used. I don't care either way---just be aware of the pitfalls of using `=`.
+
+```{r fundamentals-assignment2, exercise=TRUE}
+# Using `=`, x is not assigned to the global environment
+mean(x = 1:10)
+exists("x")
+
+# In this case, 1:10 is assigned to x and then that is passed to the mean() function as its first arg
+mean(x <- 1:10)
+exists("x")
+```
+
+### Other assignment operators
+
+There are also the `<<-` and `->>` and assignment operators, which tend to be used in functions. They are used for assigning to parent environments and are too advanced for this tutorial.
+
+Because of R's extensibility, you may find other assingment operators in the wild. For example, the `data.table` package also contains the `:=` operator, which assigns values by reference.
+
+## Coding style
+
+As with any programming language, style is important. Also, as with any programming language, style is up for debate and depends in large part on personal tastes and what circles you run in. As we discussed in the previous section, Hadley Wickham has weighed in on the `<-` *v.* `=` debate... in fact, he has dedicated a [complete section](http://adv-r.had.co.nz/Style.html) of his Advanced R book on the topic of style. 
+
+I tend to stick with [Google's style guide](https://google.github.io/styleguide/Rguide.xml) for the most part. Here is the main thrust:
+
+```r
+# Naming conventions:
+# Full stop is a legal character in naming and is preferred over
+# camelCase and underscores
+
+# For variables
+total.sales       # Good
+totalSales        # OK
+total_Sales       # Bad
+
+# For functions
+getArea()         # Good
+get_area()        # Bad
+ 
+# Unlike SAS, R is case sensitive!
+# GET.AREA != get.area
+```
+
+Hadley's style guide is often in direct contradiction to Google's style guide. Neither is right, although Hadley makes some good arguments for doing things his way in order to avoid unintended pain later on. Regardless of the style you choose, I would urge **consistency** as well as common sense.
+
+RStudio comes with [`lintr`](https://github.com/jimhester/lintr) pre-installed which will help remind you of good practices. The [`formatR`](https://yihui.name/formatr/) package is also a good resource for basic formatting guidance.
+
+## Data types
+
+> To understand computations in R, two slogans are helpful:
+>
+>   * Everything that exists is an object.
+>   * Everything that happens is a function call.
+
+ --- John Chambers, quoted by Hadley Wickham
+
+### Atomic vectors
+
+The simplest data types in R are *atomic vectors*. Atomic vectors are in many ways comparable to mathematical vectors, which facilitates matrix arithmetic commonly performed in statistics. There are six types:
+
+- Logical, 
+- Integer, 
+- Real, 
+- Complex, 
+- String (or character),
+- Raw
+
+There are no scalars, but vectors can be of length = 1 or even of length = 0.
+
+### Inspecting vectors
+
+Since R is an object oriented language (albiet not how you may be used to in C-like languages), you'll want to get comfortable with inspecting objects. This will help you understand what data is stored there and what kind of behavior you might expect when you pass the object to a function. You can use the `class()` function to inspect vectors and other R objects. 
+
+```{r data-types-inspection1, exercise=TRUE}
+# Some of the basic objects
+# Called atomic vectors
+class(1:5)
+class(1:5 + .2)
+class("foo")
+class(TRUE)
+```
+
+The `typeof()` and `mode()` functions can help you learn how objects are internally stored by R, but are less frequently used. A favorite inspection tool of mine is the structure function, `str()`, which gives a good amount of detail about any arbitrary R object.
+
+```{r data-types-inspection2, exercise=TRUE, exercise.lines = 5}
+typeof(1L)
+str(mtcars)
+
+```
+
+R actually has several object systems: basic, `S3`, `S4`, and reference classes. This is outside of the scope of this tutorial. You can read all about them in [the R language documentation](https://cran.r-project.org/doc/manuals/r-devel/R-lang.html) or in [Hadley Wickham's Advanced R book](http://adv-r.had.co.nz/)
+
+### Concatenating vectors
+
+To concatenate vectors, we use the `c()` function. Note that R will coerce disparate data types.
+
+```{r data-types-cat1, exercise=TRUE, exercise.lines = 5}
+c(1,3,5)
+c("foo","bar","baz")
+c("foo",1,2)
+
+```
+
+The `NA` is the R representation of missing values, much like SAS's dot (`.`). Because of R's coercion rules, be especially careful if your data contains "NA" strings.
+
+```{r data-types-cat2, exercise=TRUE, exercise.lines = 8}
+c(1,2,NA)     # NA is missing
+c(1,2,"NA")   # NA is NOT missing!
+c(1,2,NaN)    # NaN is not a number
+c(1,2,Inf)    # Inf is infinity
+
+```
+
+### Factors
+
+Factors most closely resemble the SAS PROC FORMAT construct. Data is saved as integers but are _usually_ represented as strings by most functions. The stored integer value references the `levels` attribute, which is a character vector stored along with your data.
+
+```{r data-types-factor1, exercise=TRUE}
+my.factor <- factor(
+  rep(letters[1:3], times=4),
+  levels = letters[1:4]       # Levels do not have to match input vector
+)
+
+print(my.factor)
+levels(my.factor)
+nlevels(my.factor)
+unclass(my.factor)
+```
+
+Because the data is stored as an integer but represented as a charater, you can run into problems when you want to do math on the *character representations* rather than the *integer data* it is stored as. [The R Inferno](http://www.burns-stat.com/documents/books/the-r-inferno/) has an excellent example of this and how to work around it.
+
+```{r data-types-factor2, exercise = TRUE}
+my.factor2 <- factor(rep(101:103,each = 2))
+
+as.numeric(my.factor2)
+
+# The fix:
+as.numeric(as.character(my.factor2))
+
+# Or better still:
+as.numeric(levels(my.factor2))[my.factor2]
+```
+
+
+### Lists
+
+Lists are also called "generic vectors" and each element can contain any R object. Those elements do not have to match. Your list may be composed of a mixture of whatever object types you would like to include.
+
+```{r data-types-list, exercise = TRUE}
+my.list <- list(
+  numeric.vector = 1:10,
+  character.vector = c("foo","bar","baz"),
+  data.frame = head(mtcars,3)
+)
+
+my.list
+my.list[3]           # Single element of list object
+my.list[[3]]         # Different indexing operator, slightly different result
+my.list$data.frame   # Yet another indexing operator
+```
+
+### Data frames
+
+Data frames are lists of column vectors, all of which have the same length.
+Vectors constituting the d.f can be of different data types.
+This object makes a 2 dimensional table much like a SAS dataset.
+
+```{r data-types-df1, exercise = TRUE}
+d.f <-  data.frame(
+  x = seq(from = 1,to = 20, by = 2),
+  y = c("a","b"),               # NOTE: R recycles vectors. This is a common theme.
+  row.names = LETTERS[1:10],
+  stringsAsFactors = TRUE       # This is the default behavior!!!
+)
+d.f
+
+# Add a couple more vectors
+d.f <- cbind(
+  d.f,
+  z = rep(letters[3:4], each=5),
+  w = rep(letters[5:6], times=5)
+)
+d.f
+```
+
+Atrributes such as (column) `names` and `row.names` can be appended.
+
+```{r data-types-df2, exercise = TRUE}
+# Change to names
+names(d.f) <- paste("x",1:4,sep="")  # NOTE: We are recycling vectors again...
+                                    # "x" is a vector of length 1
+
+# Use backquotes to put illegal characters where they don't belong...
+names(d.f)[1] <- "Subject number"
+d.f$`Subject number`
+```
+
+There are tons of different tools to with with and inspect data frames. A few common functins are listed below. We use the Motor Trend Cars (`mtcars`) data frame which is pre-installed in base R to illustrate.
+
+```{r data-types-df3, exercise = TRUE}
+# Get some basic information on the d.f
+class(mtcars)
+names(mtcars)
+row.names(mtcars)
+str(mtcars)
+
+# Peek at first six rows and columns of d.f
+head(mtcars)
+tail(mtcars)
+
+# Show dimensions of d.f
+dim(mtcars)
+nrow(mtcars)
+ncol(mtcars)
+length(mtcars)     # Remember, d.f is a list of column vectors
+```
+
+## Logical vectors and comparisons
+
+Logical operators are very similar to C. Because of R's recycling rules, you can perform comparisons on vectors of multiple lengths. This means that you can compare all elements of an entire vector to a single value in one operation.
+
+```{r data-types-logical, exercise=TRUE}
+x <- 1:5
+
+x <  5
+x == 4
+x != 3
+x >= 2
+1 %in% 1:3
+
+1 < 3 & 3 < 5    # Same as "1 < 3 < 5" (which will not work)
+1 == 2 | 1 != 2  # | is OR operator. %>% is pipe (with magrittr package)
+```
+
+*NOTE: `T`/`F` are aliases for `TRUE`/`FALSE`---They are not reserved words and can be overwritten!*
+
+## Indexing
+
+The three main indexing operators are `[`, `[[`, and `$`. They all have different syntax and behave in slightly different ways. In the case of `[` and `[[`, single dimensional vectors can be subsetted with a single number, whereas multidimensional matrices and arrays can be subset with n-dimensional numbers separated by commas. Since the data frame is both a two-dimensional table but also a list of column vectors, one or two numbers can be used to extract data. 
+
+```{r data-types-indexing1, exercise = TRUE}
+# Indices begin at 1
+mtcars[0,0]        # Not what you wanted
+mtcars[1,1]        # First row of first variable
+
+# Some indexing removes parent class
+str(mtcars[1,1])   # Atomic vector
+
+# Just MPG
+mtcars[ ,1]        # Blank will return all values
+mtcars$mpg         # '$' notation
+mtcars[[1]]        # '[[' operator will only return a single element
+mtcars[1]          # Wait, this one is different! Attributes retained...
+`[`(mtcars,1)      # All operators are actually functions
+
+# Subsetting rows
+mtcars[1,]         #Just the first observation
+mtcars[1:10,]      #first ten rows
+mtcars[1:10,10:11] #gears and carb
+mtcars[grep("^Merc",row.names(mtcars)),] #Mercedes vehicles
+```
+
+Element names can also be used to extract data with the `[` and `[[` operators. The element name is requred for subsetting with the `$` operator.
+
+```{r data-types-indexing2, exercise = TRUE}
+head(mtcars[c("mpg", "cyl")])
+head(mtcars[["mpg"]])
+```
+
+Logical vectors can also be used to subset data.
+
+```{r data-types-indexing3, exercise = TRUE}
+# Subsetting with logical vectors
+mtcars[which(mtcars$mpg > 20),] # Figures out row numbers that meet the criterion
+mtcars[mtcars$mpg > 20,]        # Logical vector testing each row for criterion
+
+# You can subset either with logical vector or index number
+# Consider space use versus ease of coding
+logical.vector = mtcars$mpg > 20
+index.vector = which(mtcars$mpg > 20)
+
+all.equal(
+  mtcars[index.vector,],
+  mtcars[logical.vector,]
+)
+
+```
+
+## Functions
+
+When I started using R, the most disorienting concepts were:
+
+  * The most basic data type is a vector, *not a scalar*
+  * All operations are function calls
+
+These facts may seem scary at first, but there is a lot to gain from this paradigm if we learn to wield the tools correctly. For example, natively handling all objects as vectors can make our code faster and more readable---your wrists will thank you for the reduced typing! 
+
+We will talk more about vectorization in the [next section](#section-vectorization). For the moment, let's take a closer look at how to deal with functions in R.
+
+### Defining functions
+
+Functions are defined with the `function()` function in R. We bind that to a name using an assignment operator, just as we would any other object. We can block several statments together using curly braces (`{`).
+
+Let's try an example. Can you write a function called `add` that adds $2 + 2$ and returns the result? After you define the function, call it using parentheses after the name: `add()`.
+
+```{r fx, exercise=TRUE, exercise.lines = 5}
+
+```
+
+```{r fx-hint}
+add <- function() {
+  
+}
+
+```
+
+```{r fx-solution}
+add <- function() {
+  2 + 2
+}
+
+add()
+```
+
+
+Let's make it a little harder. How about making a function that takes two parameters, `x` and `y` and returns their sum.
+```{r fx-param, exercise=TRUE, exercise.lines = 5}
+
+```
+
+```{r fx-param-solution}
+add <- function(x,y) {
+  x + y
+}
+
+add(3,5)
+```
+
+### Finding a function definition
+
+You can display a function definition and namespace by calling the function without parentheses.
+
+R has several different method dispatch mechanisms that are too advanced for this tutorial. [Hadley Wickham's Advanced R book](http://adv-r.had.co.nz/) has a good section on it.
+
+### Very important concepts not covered here
+
+1. Lazy evaluation
+1. Call-by-value
+1. Lexical scoping
+1. The dot-dot-dot (`...`) object
+
+I recommend reading [the R language documentation](https://cran.r-project.org/doc/manuals/r-devel/R-lang.html) to explore these topics on your own.
+
+## Vectorization
+
+### Vectorization basics
+
+R's strength is in its vectorized operations. Try making a sequence of integers using the colon (`:`) operator and then doing some simple math on it.
+
+```{r vector, exercise=TRUE, exercise.lines = 8}
+# This will give us a vector of numbers
+0:10
+
+# This will multiply each value by 9
+9 * 0:10
+```
+
+You'll see that the operation was performed on *each* element of the vector. This is called vectorization and is more computationally efficient (and more readable) than writing C-style `for` loops. More on that later!
+
+### Recycling vectors
+
+R will recycle (wrap around) vectors when you pass args of differing lengths. This can make the code more readable and save us some typing as long as we know to expect this behavior. Let's try pasting elements of two vectors together into a single vector of strings using the `paste0()` function.
+
+*NOTE: R will recycle vectors if the lengths of the shorter vector is not a factor of the longer vector (it doesn not divide evenly). A warning is often given.*
+
+```{r vector-recycle, exercise=TRUE, exercise.lines =8}
+# Combine the letters 'a' and 'b' to the numbers 1 thru 10
+paste0(letters[1:2], 1:10)
+
+# This will work even though one vector is length 3 and the other is length 10
+paste0(letters[1:3], 1:10)
+```
+
+The example above also demonstrates how R coerces vectors into common types---although one of the arguments was of type `integer` (`1:10`), the output is of type `character`.
+
+### C-style `for` loops versus vectorization
+
+Many programmers coming to R from C-like languages like to write `for` loops. Burns calls this speaking R with a C accent. In R, `for` loops are almost invariably the wrong answer to *any* question. R's power comes from vectorization, which saves on typing and makes all of our computations faster. 
+
+Let's explore looping through the data three different ways. The code below uses the `system.time()` function to show the speed of running operations using `for` loops as compared with using native vectorized operations in R.
+
+<pre class="r"><code>n &lt;- 10^5
+
+# Slow...
+system.time({
+  vector &lt;- integer(0)
+  for (i in seq(1,n)) {
+    vector &lt;- c(vector,i)
+  }
+})</code></pre>
+<pre><code>##    user  system elapsed 
+##  34.792   0.144  36.237</code></pre>
+<pre class="r"><code># Better...
+system.time({
+  vector &lt;- integer(n)
+  for (i in seq(1,n)) {
+    vector[i] &lt;- i
+  }
+})</code></pre>
+<pre><code>##    user  system elapsed 
+##   0.244   0.000   0.242</code></pre>
+<pre class="r"><code># Best!
+system.time(vector &lt;- 1:n)</code></pre>
+<pre><code>##    user  system elapsed 
+##   0.000   0.000   0.001</code></pre>
+
+The code is easier to write, too. Here is an exampe of two different ways to calcualte the cumulative sum of the logarithm of the elements in a vector.
+
+```{r vector-speed4, exercise = TRUE}
+n <- 10^3
+
+# Slow and hard to read
+lsum <- 0
+for (i in seq(1,n))  {
+  lsum <- lsum + log(i)
+}
+lsum
+
+# Fast and easy to read
+sum(log(1:n))
+```
+
+*Thanks to [The R Inferno](http://www.burns-stat.com/documents/books/the-r-inferno/) for the examples above*
+
+### The `lapply` family of functions
+
+You can apply a function to each element of of list or vector using the `lapply()` family of functions. **This is the most important new skill you must learn as you become an R programmer.** Learning to to set up your programs and data to make full use of these functions will make your code more elegant, easier to read, shorter, and most importantly, *faster*.
+
+Here is an example of how you might get the mean of all columns in the `mtcars` dataset using `for` loops. It's slow and icky.
+
+```{r vector-lapply, exercise=TRUE}
+# Slow
+x <- numeric(length(mtcars))
+for (i in seq_along(mtcars)) {
+  x[i] <- mean(mtcars[,i])
+  names(x)[i] <- names(mtcars[i])
+}
+x
+```
+
+Here is an example of using `lapply()` and `sapply()` to get the same result as above. It is faster and easier to read and write.
+
+```{r vector-lapply2, exercise = TRUE}
+# Fast
+lapply(mtcars, FUN=mean)  # Returns list
+sapply(mtcars, FUN=mean)  # Returns vector when possible
+```
+
+## Packages
+
+R's power comes in part from its extensive package library.
+R users have created thousands and thousands of packages covering everything
+from bioinformatics, GIS, statistics, plotting, graphics, data mining, and more.
+These packages can be accessed through the CRAN repository and increasingly there are packages on github which can be downloaded and installed with very little effort.
+Download/install packages from a CRAN mirror using your IDE or with the `install.packages()` function.
+
+Use `library()` or `require()` to load the packages to memory and attach the namespace to your session. The biggest difference is that `require()` returns a logical value to indicate success or failure to load.
+
+```r
+library("this package does not exist")  # Error
+require("this package does not exist")  # Warning plus returns FALSE
+```
+
+Using `require()` allows for (among other things) dynamic installation of packages.
+
+```r
+if (!require(magrittr)) {
+  install.packages("magrittr")
+  library(magrittr)
+}
+```
+
+```{r packages, exercise = TRUE}
+library(ggplot2)
+
+qplot(wt, mpg, data = mtcars, size = cyl, col = qsec)
+```
+
+## Getting help
+
+Documentation can be accessed from an interactive session using the `help()` function. This will get help on a specific R object or package. Use `?` prepended to an object as a shortcut.
+
+You can also use search terms to look for documentation using `help.search()` and `??`. You can also use `RSiteSearch()` to use the search engine at <http://search.r-project.org>.
+
+The `library()` function without any parameters will give a list of available packages. The `data()` function will provide a list of available datasets.
+
+
+## References and further reading
+
+Many of these resources have been the source material and/or springboard for my talk today, particularly aRrgh and R Inferno. If you liked my talk, I encourage you to check out the websites for yourself!
+
+I would also like to give a special shout-out to those at CRAN and Hadley Wickham for offering up so many free tools and documentation to help make R easier to learn and use!
+
+- CRAN R Manuals  
+  <https://cran.r-project.org/manuals.html>
+- aRrgh: a newcomer's (angry) guide to R  
+  <http://arrgh.tim-smith.us/>
+- Learn X in Y Minutes where X=R  
+  <https://learnxinyminutes.com/docs/r/>
+- The R Inferno  
+  <http://www.burns-stat.com/documents/books/the-r-inferno/>
+- Impatient R  
+  <http://www.burns-stat.com/documents/tutorials/impatient-r/>
+- Google's R Style Guide  
+  <https://google.github.io/styleguide/Rguide.xml>
+- Advanced R by Hadley Wickham  
+  <http://adv-r.had.co.nz/>
+
+## Downloading R and RStudio
+
+Now that you've gotten a small taste of the R language, I hope you are excited to dive in a little deeper on your own!
+
+You can download R at <https://cran.r-project.org/> and RStudio at <https://www.rstudio.com/products/rstudio/download/>.
+
+## Downloading this tutorial
+
+This tutorial is available as an [R package](#section-packages). It can be downloaded, installed, and run on your local machine using the script below. Just open RStudio (or your favorite IDE), paste the following into the window marked **Console**, and press `Enter`:
+
+```r
+source("http://www.neuron0.net/YARD/install_and_run.r")
+```
+
+## About the author
+
+<center>![Paul Egeler](http://www.neuron0.net/YARD/20170914medium.jpg){width="800"}</center>
+
+Paul is a Senior Biostatistician at the Spectrum Health Office of Research Administration. He consults with physicians and researchers throughout the network to help turn data into scientific knowledge. Prior to that, he was a Marketing Analyst II at Meijer where he specialized in analytic development, creating tools and workflows to assist analytics teams throughout the organization. Paul is passionate about free and open source software projects, hence his involvement in the West Michigan R Users Group.
+
+<center>
+[Please direct your comments and suggestions here](mailto:paulegeler@gmail.com).
+
+[![Protein](http://www.neuron0.net/YARD/r2-whole-alpha.png){width="560"}](http://pubs.acs.org/doi/abs/10.1021/acs.biochem.6b00472)
+</center>
+

@@ -1,0 +1,14 @@
+Package: YARD
+Type: Package
+Title: YARD - Yet Another R Demo
+Version: 0.1.3
+Author: Paul W. Egeler, M.S., GStat <paulegeler@gmail.com>
+Maintainer: Paul W. Egeler, M.S., GStat <paulegeler@gmail.com>
+Description: This package is a learnr demo built for the West Michigan R Users
+    Group meeting at Big Data Ignite 2017.
+Imports: learnr
+Suggests: ggplot2
+License: GPL-2
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 6.0.1
