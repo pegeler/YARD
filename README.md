@@ -3,8 +3,8 @@ YARD: Yet Another R Demo
 
 **Paul W. Egeler, M.S., GStat**
 
-This package is a learnr demo built for the West Michigan R Users Group
-meeting at Big Data Ignite 2017. It is meant to introduce R to a user with some background in coding but who
+This package is a [`learnr`](https://github.com/rstudio/learnr) demo built for the [West Michigan R Users Group](https://github.com/WestMichiganRUserGroup)
+meeting at [Big Data Ignite](http://www.bigdataignite.com/) 2017. It is meant to introduce R to a user with some background in coding but who
 has had little to no experience with R *per se*.
 
 ## Installation
