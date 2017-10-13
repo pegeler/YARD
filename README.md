@@ -7,7 +7,7 @@ This package is a [`learnr`](https://github.com/rstudio/learnr) demo built for t
 meeting at [Big Data Ignite](http://www.bigdataignite.com/) 2017. It is meant to introduce R to a user with some background in coding but who
 has had little to no experience with R *per se*.
 
-## Installation and Running
+## Installation
 
 To run this tutorial, you must first download and install the `YARD` package. The [`devtools`](https://cran.r-project.org/web/packages/devtools/index.html) package must be installed first. If `devtools` is not already installed, you can install it from CRAN using the following code in the **Console** of your R session:
 
@@ -16,12 +16,6 @@ To run this tutorial, you must first download and install the `YARD` package. Th
 Afterwards, you can then install this package by typing the following into the R **Console**:
 
     devtools::install_github("pegeler/YARD")
-
----
-
-Once the package is installed, the tutorial can be initiated from the R **Console**:
-
-    learnr::run_tutorial("YARD","YARD")
 
 ## Running the Tutorial
 
