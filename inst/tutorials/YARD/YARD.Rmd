@@ -692,10 +692,32 @@ You can download R at <https://cran.r-project.org/> and RStudio at <https://www.
 
 ## Downloading this tutorial
 
+### Basic
 This tutorial is available as an [R package](#section-packages). It can be downloaded, installed, and run on your local machine using the script below. Just open RStudio (or your favorite IDE), paste the following into the window marked **Console**, and press `Enter`:
 
 ```r
 source("http://www.neuron0.net/YARD/install_and_run.r")
+```
+
+### Advanced
+
+More advanced users might want to try installing this tutorial from my [GitHub](https://github.com/pegeler/YARD).
+The [`devtools`](https://cran.r-project.org/web/packages/devtools/index.html) package must be installed first. If `devtools` is not already installed, you can install it from CRAN using the following code in the **Console** of your R session:
+
+```r
+install.packages("devtools")
+```
+
+Afterwards, you can then install this package by typing the following into the R **Console**:
+
+```r
+devtools::install_github("pegeler/YARD")
+```
+
+Once the package is installed, the tutorial can be initiated from the R **Console**:
+
+```r
+learnr::run_tutorial("YARD","YARD")
 ```
 
 ## About the author

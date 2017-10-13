@@ -164,14 +164,14 @@ d</code></pre>
 <tr>
 <td>
 
-<div id="htmlwidget-d3728128c7738ecf89fb" style="width:100%;height:auto;", class = "quiz html-widget">
+<div id="htmlwidget-5c10a7deeca1005cdae9" style="width:100%;height:auto;", class = "quiz html-widget">
 <div class="panel panel-default">
 <div class="panel-body quizArea">
 </div>
 </div>
 </div>
 
-<script type="application/json" data-for="htmlwidget-d3728128c7738ecf89fb">{"x":{"question":"The variable <code>x<\/code> is currently a boolean vector. Will this code assign an integer vector to <code>x<\/code>?\n           <code>x &lt; - 1:10<\/code>","answers":[{"option":"Yes","correct":false,"message":null},{"option":"No, it will assign floating point numbers","correct":false,"message":null},{"option":"No, it will coerce the vector into boolean","correct":false,"message":null},{"option":"No, it perform a comparison","correct":true,"message":null},{"option":"No, it will cause an error","correct":false,"message":null}],"label":"assignment-quiz-1","skipStartButton":true,"perQuestionResponseAnswers":true,"perQuestionResponseMessaging":true,"preventUnanswered":true,"displayQuestionCount":false,"displayQuestionNumber":false,"disableRanking":true,"nextQuestionText":"","checkAnswerText":"Submit Answer","allowRetry":false,"randomSortAnswers":false,"json":{"info":{"name":"","main":""},"questions":[{"q":"The variable <code>x<\/code> is currently a boolean vector. Will this code assign an integer vector to <code>x<\/code>?\n           <code>x &lt; - 1:10<\/code>","a":[{"option":"Yes","correct":false,"message":null},{"option":"No, it will assign floating point numbers","correct":false,"message":null},{"option":"No, it will coerce the vector into boolean","correct":false,"message":null},{"option":"No, it perform a comparison","correct":true,"message":null},{"option":"No, it will cause an error","correct":false,"message":null}],"correct":"Correct!","incorrect":"Incorrect."}]}},"evals":[],"jsHooks":[]}</script>
+<script type="application/json" data-for="htmlwidget-5c10a7deeca1005cdae9">{"x":{"question":"The variable <code>x<\/code> is currently a boolean vector. Will this code assign an integer vector to <code>x<\/code>?\n           <code>x &lt; - 1:10<\/code>","answers":[{"option":"Yes","correct":false,"message":null},{"option":"No, it will assign floating point numbers","correct":false,"message":null},{"option":"No, it will coerce the vector into boolean","correct":false,"message":null},{"option":"No, it perform a comparison","correct":true,"message":null},{"option":"No, it will cause an error","correct":false,"message":null}],"label":"assignment-quiz-1","skipStartButton":true,"perQuestionResponseAnswers":true,"perQuestionResponseMessaging":true,"preventUnanswered":true,"displayQuestionCount":false,"displayQuestionNumber":false,"disableRanking":true,"nextQuestionText":"","checkAnswerText":"Submit Answer","allowRetry":false,"randomSortAnswers":false,"json":{"info":{"name":"","main":""},"questions":[{"q":"The variable <code>x<\/code> is currently a boolean vector. Will this code assign an integer vector to <code>x<\/code>?\n           <code>x &lt; - 1:10<\/code>","a":[{"option":"Yes","correct":false,"message":null},{"option":"No, it will assign floating point numbers","correct":false,"message":null},{"option":"No, it will coerce the vector into boolean","correct":false,"message":null},{"option":"No, it perform a comparison","correct":true,"message":null},{"option":"No, it will cause an error","correct":false,"message":null}],"correct":"Correct!","incorrect":"Incorrect."}]}},"evals":[],"jsHooks":[]}</script>
 </td>
 </tr>
 </table>
@@ -651,8 +651,20 @@ qplot(wt, mpg, data = mtcars, size = cyl, col = qsec)</code></pre>
 </div>
 <div id="section-downloading-this-tutorial" class="section level2">
 <h2>Downloading this tutorial</h2>
+<div id="section-basic" class="section level3">
+<h3>Basic</h3>
 <p>This tutorial is available as an <a href="#section-packages">R package</a>. It can be downloaded, installed, and run on your local machine using the script below. Just open RStudio (or your favorite IDE), paste the following into the window marked <strong>Console</strong>, and press <code>Enter</code>:</p>
 <pre class="r"><code>source(&quot;http://www.neuron0.net/YARD/install_and_run.r&quot;)</code></pre>
+</div>
+<div id="section-advanced" class="section level3">
+<h3>Advanced</h3>
+<p>More advanced users might want to try installing this tutorial from my <a href="https://github.com/pegeler/YARD">GitHub</a>. The <a href="https://cran.r-project.org/web/packages/devtools/index.html"><code>devtools</code></a> package must be installed first. If <code>devtools</code> is not already installed, you can install it from CRAN using the following code in the <strong>Console</strong> of your R session:</p>
+<pre class="r"><code>install.packages(&quot;devtools&quot;)</code></pre>
+<p>Afterwards, you can then install this package by typing the following into the R <strong>Console</strong>:</p>
+<pre class="r"><code>devtools::install_github(&quot;pegeler/YARD&quot;)</code></pre>
+<p>Once the package is installed, the tutorial can be initiated from the R <strong>Console</strong>:</p>
+<pre class="r"><code>learnr::run_tutorial(&quot;YARD&quot;,&quot;YARD&quot;)</code></pre>
+</div>
 </div>
 <div id="section-about-the-author" class="section level2">
 <h2>About the author</h2>
