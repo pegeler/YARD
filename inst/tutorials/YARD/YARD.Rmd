@@ -219,8 +219,8 @@ RStudio comes with [`lintr`](https://github.com/jimhester/lintr) pre-installed w
 >
 >   * Everything that exists is an object.
 >   * Everything that happens is a function call.
-
- --- John Chambers, quoted by Hadley Wickham
+>
+> --- John Chambers, quoted by Hadley Wickham
 
 ### Atomic vectors
 
