@@ -16,17 +16,17 @@ I recommend using an integrated development environment (IDE) to help making cod
 
 ### Installation
 
-The [`devtools`](https://cran.r-project.org/web/packages/devtools/index.html) package must be installed in order to install the tutorial. `devtools` can be installed for free from CRAN by pasting the following code in the **Console** of your R session and pressing `Enter`:
+The [`devtools`](https://cran.r-project.org/web/packages/devtools/index.html) package must be installed in order to install the tutorial. `devtools` can be installed for free from CRAN by pasting the following code in the **Console** of your R session and pressing <kbd>Enter</kbd>:
 
     install.packages("devtools")
 
-Afterwards, you can then install this package by pasting the code below into the R **Console** and pressing `Enter` again:
+Afterwards, you can then install this package by pasting the code below into the R **Console** and pressing <kbd>Enter</kbd> again:
 
     devtools::install_github("pegeler/YARD")
 
 ### Running the Tutorial
 
-Once the package is installed, it can be run from your machine by typing the following into your **Console** and pressing `Enter`
+Once the package is installed, it can be run from your machine by typing the following into your **Console** and pressing <kbd>Enter</kbd>
 
     learnr::run_tutorial("YARD", "YARD")
 
